@@ -35,18 +35,18 @@ public class InscripcionData {
     }
     
     public void guardarInscripcion(Inscripcion insc){
-        String sql="INSET INTO Inscripción (idAlumno,idMateria,nota) VALUES (?,?,?)";
+        String sql="INSET INTO Inscripcion (idAlumno,idMateria,nota) VALUES (?,?,?)";
         
         try {
             PreparedStatement ps=con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1,insc.getAlumno().getIdAlumno());
+            ps.setInt(1,insc.getAlumno().getId_alunmo());
             ps.setInt(2,insc.getMateria().getIdMateria());
             ps.setDouble(3, insc.getNota());
             ps.executeUpdate();
             ResultSet rs=ps.getGeneratedKeys();
             
             if(rs.next()){
-                insc.setIdInscripción(rs.getInt(1));
+                insc.setIdInscripto(rs.getInt(1));
                 JOptionPane.showMessageDialog(null,"Inscripción Registrada");
             }
             
@@ -59,7 +59,7 @@ public class InscripcionData {
     }
     
     public void actualizarNota(int idAlumno, int idMateria,double nota){
-        String sql="UPDATE Inscripción SET nota = ? WHERE idAlumno = ? and idMateria = ? ";
+        String sql="UPDATE Inscripcion SET nota = ? WHERE idAlumno = ? and idMateria = ? ";
         
         try{
              PreparedStatement ps=con.prepareStatement(sql);
@@ -80,7 +80,7 @@ public class InscripcionData {
     }
     
     public void borrarInscripcionMateriaAlumno(int idAlumno, int idMateria){
-        String sql="DELETE FROM Inscripción WHERE idAlumno = ? and idMateria = ?";
+        String sql="DELETE FROM Inscripcion WHERE idAlumno = ? and idMateria = ?";
         
         try {
             PreparedStatement ps=con.prepareStatement(sql);
@@ -89,7 +89,7 @@ public class InscripcionData {
             
             int filas=ps.executeUpdate();
             if(filas>0){
-                JOptionPane.showMessageDialog(null,"Error al acce");
+                JOptionPane.showMessageDialog(null,"Error al acceder");
             }
             
             ps.close();
@@ -99,16 +99,16 @@ public class InscripcionData {
     }
     
     public List<Inscripcion>ObtenerInscripciones(){
-             ArrayList<Inscripción> cursadas= new ArrayList<>();
-            String sql="SELECT * FROM Inscripción";
+             ArrayList<Inscripcion> cursadas= new ArrayList<>();
+            String sql="SELECT * FROM Inscripcion";
             
         try {
             PreparedStatement ps=con.prepareStatement(sql);
             ResultSet rs=ps.executeQuery();
             
             while(rs.next()){
-                Inscripción insc= new Inscripción();
-                insc.setIdInscripción(rs.getInt("idInscripción"));
+                Inscripcion insc= new Inscripcion();
+                insc.setIdInscripto(rs.getInt("idInscripcion"));
                 Alumno alu=ad.buscarAlumno(rs.getInt("idAlumno"));
                 Materia mat=md.buscarMateria(rs.getInt("idMateria"));
                 insc.setAlumno(alu);
@@ -126,8 +126,8 @@ public class InscripcionData {
     }
     
     public List<Inscripcion>ObtenerInscripcionesPorAlumno(int idAlumno){
-             ArrayList<Inscripción> cursadas= new ArrayList<>();
-            String sql="SELECT * FROM Inscripción WHERE idAlumno = ?";
+             ArrayList<Inscripcion> cursadas= new ArrayList<>();
+            String sql="SELECT * FROM Inscripcion WHERE idAlumno = ?";
             
         try {
             PreparedStatement ps=con.prepareStatement(sql);
@@ -136,8 +136,8 @@ public class InscripcionData {
             ResultSet rs=ps.executeQuery();
             
             while(rs.next()){
-                Inscripción insc= new Inscripción();
-                insc.setIdInscripción(rs.getInt("idInscripción"));
+                Inscripcion insc= new Inscripcion();
+                insc.setIdInscripto(rs.getInt("idInscripcion"));
                 Alumno alu=ad.buscarAlumno(rs.getInt("idAlumno"));
                 Materia mat=md.buscarMateria(rs.getInt("idMateria"));
                 insc.setAlumno(alu);
@@ -158,9 +158,9 @@ public class InscripcionData {
         
         ArrayList<Materia> materias = new ArrayList<>();
             
-            String sql="SELECT Inscripción.idMateria, nombre, año FROM Inscripción"
-                    + "materia WHERE Inscripción.idMateria = materia.idMateria" +
-                    "AND Inscripción.idAlumno = ?;";
+            String sql="SELECT Inscripcion.idMateria, nombre, año FROM Inscripcion"
+                    + "materia WHERE Inscripcion.idMateria = materia.idMateria" +
+                    "AND Inscripcion.idAlumno = ?;";
         try {
             
             PreparedStatement ps=con.prepareStatement(sql);
@@ -189,7 +189,7 @@ public class InscripcionData {
          ArrayList<Materia> materias= new ArrayList<>();
          
          String sql="SELECT * FROM materia WHERE estado = 1 AND idMateria not in" +
-                 "(SELECT idMateria FROM Inscripción WHERE idAlumno =?)";
+                 "(SELECT idMateria FROM Inscripcion WHERE idAlumno =?)";
          
          try {
             
@@ -217,7 +217,7 @@ public class InscripcionData {
         ArrayList<Alumno> alumnosMateria= new ArrayList<>();
             
             String sql= "SELECT a.idAlumno,dni,nombre,apellido,fechaNacimiento,estado" +
-                    "FROM Inscripción i,alumno a WHERE i.idAlumno = a.idAlumno AND idMateria = ? AND a.estado = 1";
+                    "FROM Inscripcion i,alumno a WHERE i.idAlumno = a.idAlumno AND idMateria = ? AND a.estado = 1";
         
           try {
             
@@ -228,10 +228,10 @@ public class InscripcionData {
             while(rs.next()){
                 
                 Alumno alumno = new Alumno();
-                alumno.setIdAlumno(rs.getInt("idAlumno"));
+                alumno.setId_alunmo(rs.getInt("idAlumno"));
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
-                alumno.setFechaNac(rs.getDate("fechaNacimiento").toLocalDate());
+                alumno.setFachaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
                 alumno.setEstado(rs.getBoolean("estado"));
                 alumnosMateria.add(alumno);
                 
