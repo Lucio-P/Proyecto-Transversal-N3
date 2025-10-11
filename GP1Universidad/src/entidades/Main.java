@@ -22,7 +22,7 @@ public class Main {
     AlumnoData alumn = new AlumnoData();
     alumn.guardarAlumno(More);  /*agregue alumno*/
     alumn.modificarAlumno(More); /*modifique el nombre*/
-    alumn.eliminarAlumno(1); /*el esatado paso a false*/
+    alumn.eliminarAlumno(1); /*el estado paso a false*/
     
     }           
 }
