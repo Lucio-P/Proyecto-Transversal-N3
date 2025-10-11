@@ -18,8 +18,8 @@ import persistencia.miConexion;
 public class VistaAlumno extends javax.swing.JInternalFrame {
     
     private DefaultTableModel modelo= new DefaultTableModel();
-    private int estado = 3;
-
+    private int estado;
+    
     /**
      * Creates new form VistaAlumno
      */
