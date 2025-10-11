@@ -63,6 +63,10 @@ public class Materia {
     public Materia(int idMateria) {
         this.idMateria = idMateria;
     }
+    
+    public Materia (){
+        
+    }
 
     @Override
     public String toString() {

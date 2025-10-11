@@ -20,11 +20,12 @@ import java.util.ArrayList;
 public class MateriaData {
     private Connection con=null;
     
-    public MateriaData() throws SQLException{
+    
+    public MateriaData(){
         con = miConexion.getmiConexion();
     }
     
-    public void guardarMateria (Materia materia) throws SQLException{
+    public void guardarMateria (Materia materia){
             String sql = "INSERT TO materia (nombre,anio,estado)"+ "VALUES(?,?,?)";
        try{
            PreparedStatement ps= con.prepareStatement(sql);
@@ -39,8 +40,10 @@ public class MateriaData {
        }
     }
     
-    public Materia buscarMateria(int id) throws SQLException{
+    public Materia buscarMateria(int id){
+        
         Materia materia = null;
+        
         String sql="SELECT * FROM materia WHERE idMateria =?";
         
         try {
@@ -49,11 +52,11 @@ public class MateriaData {
             ResultSet rs = ps.executeQuery();
             
             if(rs.next()){
-            Materia = new Materia();
+            materia = new Materia();
             materia.setIdMateria(rs.getInt("idMateria"));
             materia.setNombre(rs.getString("nombre"));
-            materia.setAnio(rs.getAnio("anio"));
-            materia.setEstado(rs.getEstado("estado"));
+            materia.setAnio(rs.getInt("anio"));
+            materia.setEstado(rs.getInt("estado"));
         }
             ps.close();
     } catch (SQLException ex) {
@@ -62,7 +65,7 @@ public class MateriaData {
     return materia;
   }
     
-    public void modificarMateria (Materia materia) throws SQLException{
+    public void modificarMateria (Materia materia){
         String sql= "UPDATE materia SET nombre = ?, anio =?, estado = ? WHERE idMateria =?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -92,7 +95,7 @@ public class MateriaData {
         }
     }
     
-    public List<Materia>listarMateria() throws SQLException{
+    public List<Materia>listarMateria(){
         List<Materia>listaMateria =new ArrayList<>();
         String sql ="SELECT * FROM materia WHERE estado = 1";
         
@@ -105,7 +108,7 @@ public class MateriaData {
                materia.setIdMateria(rs.getInt("idMateria"));
                materia.setNombre(rs.getString("nombre"));
                materia.setAnio(rs.getInt("anio"));
-               materia.setEstado(rs.getEstado("estado"));
+               materia.setEstado(rs.getInt("estado"));
                listaMateria.add(materia);
             }
             ps.close();

@@ -223,10 +223,10 @@ public class Pantalla extends javax.swing.JFrame {
         // TODO add your handling code here:
         jdEscritorio.removeAll();
         jdEscritorio.repaint();
-        VistaIncripciones vistaI = new VistaIncripciones ();
-        vistaI.setVisible(true);
-        jdEscritorio.add(vistaI);
-        jdEscritorio.moveToFront(vistaI);
+        VIstaListarIncripciones vistaLI = new VIstaListarIncripciones ();
+        vistaLI.setVisible(true);
+        jdEscritorio.add(vistaLI);
+        jdEscritorio.moveToFront(vistaLI);
     }//GEN-LAST:event_jmListaDeInscripcionesActionPerformed
 
     /**
