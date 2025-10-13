@@ -18,13 +18,14 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = new DefaultTableModel ();
     AlumnoData alum = new AlumnoData ();
     InscripcionData inscr = new InscripcionData ();
+    MateriaData mat = new MateriaData ();
     /**
      * Creates new form VIstaListarIncripciones
      */
     public VIstaListarIncripciones() {
         initComponents();
         cabecera ();
-        cargarAlumnos ();
+        cargarMateria ();
     }
 
     /**
@@ -38,7 +39,7 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jcbAlumnos = new javax.swing.JComboBox<>();
+        jcbMateria = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtMaterias = new javax.swing.JTable();
         jbSalir = new javax.swing.JButton();
@@ -47,11 +48,11 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista de Inscripciones");
 
-        jLabel2.setText("Alumno:");
+        jLabel2.setText("Materia");
 
-        jcbAlumnos.addActionListener(new java.awt.event.ActionListener() {
+        jcbMateria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbAlumnosActionPerformed(evt);
+                jcbMateriaActionPerformed(evt);
             }
         });
 
@@ -63,7 +64,7 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Id Materia", "Nombre ", "Año", "Nota"
+                "Id Alumno", "Nombre ", "Apellido", "Nota"
             }
         ));
         jScrollPane1.setViewportView(jtMaterias);
@@ -85,7 +86,7 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jcbAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcbMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(251, Short.MAX_VALUE))
             .addComponent(jScrollPane1)
@@ -102,7 +103,7 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jcbAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -113,10 +114,10 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jcbAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnosActionPerformed
+    private void jcbMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbMateriaActionPerformed
         // TODO add your handling code here:
         cargarInscripcion();
-    }//GEN-LAST:event_jcbAlumnosActionPerformed
+    }//GEN-LAST:event_jcbMateriaActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         // TODO add your handling code here:
@@ -130,27 +131,28 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbSalir;
-    private javax.swing.JComboBox<Object> jcbAlumnos;
+    private javax.swing.JComboBox<Object> jcbMateria;
     private javax.swing.JTable jtMaterias;
     // End of variables declaration//GEN-END:variables
 
     private void cabecera (){
         
-        modelo.addColumn("Id Materia");
+        modelo.addColumn("Id Alumno");
         modelo.addColumn("Nombre");
-        modelo.addColumn("Año");
+        modelo.addColumn("Apellido");
         modelo.addColumn("Nota");
         jtMaterias.setModel(modelo);
         jtMaterias.setDefaultEditor(Object.class, null);
     }
 
-    private void cargarAlumnos(){
+    private void cargarMateria(){
         
-        List <Alumno> alumnos = alum.listarAlumnos();
-        
-        for (Alumno a: alumnos) {
+       jcbMateria.removeAllItems();
+       List <Materia> materias =  mat.listarMateria();
+       
+        for (Materia m : materias) {
             
-            jcbAlumnos.addItem(a);
+            jcbMateria.addItem(m);
         }
     }
     
@@ -158,19 +160,22 @@ public class VIstaListarIncripciones extends javax.swing.JInternalFrame {
         
         limpiarTabla ();
         
-        Alumno alumno = (Alumno) jcbAlumnos.getSelectedItem();
+        Materia materia = (Materia) jcbMateria.getSelectedItem();
         
-        if (alumno != null) {
+        if (materia != null) {
             
-            List <Materia> materias = inscr.ObtenerMateriaCursadas(alumno.getId_alunmo());
+            List <Inscripcion> inscrip = inscr.ObtenerAlumnoXMateria(materia.getIdMateria());
             
-            for (Materia m : materias) {
+            for (Inscripcion i : inscrip) {
                 
-                int nota = inscr.obtenerNota(alumno.getId_alunmo(), m.getIdMateria());
+                Alumno a = i.getAlumno();
                 
                 modelo.addRow (new Object []{
                     
-                    m.getIdMateria(), m.getNombre(), m.getAnio(), nota
+                    a.getId_alunmo(),
+                    a.getNombre(),
+                    a.getApellido(),
+                    i.getNota() 
                 });
             }
             
