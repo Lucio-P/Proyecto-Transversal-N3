@@ -247,5 +247,33 @@ public class InscripcionData {
           return alumnosMateria;
      }
     
+    public int obtenerNota (int idAlumno, int idMateria){
+        
+        String sql = "SELECT nota FROM inscripto WHERE idAlumno = ? AND idMateria = ?";
+        int nota = 0;
+        
+        try{
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            ps.setInt(1, idAlumno);
+            ps.setInt(2, idMateria);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                
+                nota = rs.getInt("nota");
+            }
+            
+            ps.close();
+        }catch (SQLException ex){
+            
+            JOptionPane.showMessageDialog(null, "Error al obtener nota.");
+        }
+        
+        return nota;
+    }
+    
     
 }
