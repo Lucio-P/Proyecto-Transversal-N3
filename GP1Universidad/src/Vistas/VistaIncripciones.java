@@ -4,12 +4,12 @@
  */
 package Vistas;
 
-import entidades.Alumno;
-import entidades.Materia;
+import entidades.*;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import persistencia.*;
 import java.awt.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -90,10 +90,25 @@ public class VistaIncripciones extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jtInscripciones);
 
         jbInscribirse.setText("Inscribirse");
+        jbInscribirse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbInscribirseActionPerformed(evt);
+            }
+        });
 
         jbAnular.setText("Anular Inscripcion");
+        jbAnular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAnularActionPerformed(evt);
+            }
+        });
 
         jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,6 +198,22 @@ public class VistaIncripciones extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jcbAlumnoActionPerformed
 
+    private void jbInscribirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscribirseActionPerformed
+        // TODO add your handling code here:
+        
+        inscribir ();
+    }//GEN-LAST:event_jbInscribirseActionPerformed
+
+    private void jbAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAnularActionPerformed
+        // TODO add your handling code here:
+        anularInscripcion();
+    }//GEN-LAST:event_jbAnularActionPerformed
+
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
+        // TODO add your handling code here:
+        dispose ();
+    }//GEN-LAST:event_jbSalirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -253,6 +284,47 @@ public class VistaIncripciones extends javax.swing.JInternalFrame {
                 modelo.addRow(new Object [] 
                 {m.getIdMateria(), m.getNombre(), m.getAnio() });
             }
+        }
+    }
+    
+    private void inscribir (){
+        
+        int fila = jtInscripciones.getSelectedRow();
+        if (fila != -1) {
+            
+            Alumno alumno = (Alumno) jcbAlumno.getSelectedItem();
+            
+            int idMateria = (int) jtInscripciones.getValueAt(fila, 0) ;
+                        
+            inscr.guardarInscripcion(alumno.getId_alunmo(), idMateria);
+            
+            JOptionPane.showMessageDialog(this, "Inscripcion realizada con exito.");
+            
+            materiasNoInscriptas();
+            
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "Seleccione una materia para inscribir.");
+        }
+    }
+    
+    private void anularInscripcion (){
+        
+        int fila = jtInscripciones.getSelectedRow();
+        if (fila != -1) {
+            
+            Alumno alumno = (Alumno) jcbAlumno.getSelectedItem();
+            
+            int idMateria = (int) jtInscripciones.getValueAt(fila, 0);
+            
+            inscr.borrarInscripcionMateriaAlumno(alumno.getId_alunmo(), idMateria);
+            
+            JOptionPane.showMessageDialog(this, "Inscripcion anulada con exito.");
+            
+            materiasInscriptas();
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "Seleccione una materia para anular.");
         }
     }
 }
