@@ -56,7 +56,7 @@ public class InscripcionData {
     }
     
     public void actualizarNota(int idAlumno, int idMateria,double nota){
-        String sql="UPDATE inscripto SET nota = ? WHERE idAlumno = ? and idMateria = ? ";
+        String sql="UPDATE inscripto SET nota = ? WHERE idAlumno = ? AND idMateria = ? ";
         
         try{
              PreparedStatement ps=con.prepareStatement(sql);
@@ -65,13 +65,14 @@ public class InscripcionData {
              ps.setInt(3, idMateria);
              
              int filas=ps.executeUpdate();
+             
              if(filas>0){
                  JOptionPane.showMessageDialog(null,"Nota Actualizada");
              }
              ps.close();
              
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"Error al acceder a la tabla inscripcion ");
+            JOptionPane.showMessageDialog(null,"Error al actualizar nota. ");
         }
        
     }
@@ -124,23 +125,21 @@ public class InscripcionData {
     }
     
     public List<Inscripcion>ObtenerInscripcionesPorAlumno(int idAlumno){
-             ArrayList<Inscripcion> cursadas= new ArrayList<>();
-            String sql="SELECT * FROM inscripto WHERE idAlumno = ?";
+            ArrayList<Inscripcion> cursadas= new ArrayList<>();
+            String sql="SELECT * FROM inscripto i JOIN materia m ON i.idMateria = m.idMateria WHERE idAlumno = ?";
             
         try {
-            PreparedStatement ps=con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idAlumno);
             
-            ResultSet rs=ps.executeQuery();
+            ResultSet rs =ps.executeQuery();
             
             while(rs.next()){
-                Inscripcion insc= new Inscripcion();
-                insc.setIdInscripto(rs.getInt("idInscripcion"));
-                Alumno alu=ad.buscarAlumno(rs.getInt("idAlumno"));
-                Materia mat=md.buscarMateria(rs.getInt("idMateria"));
-                insc.setAlumno(alu);
-                insc.setMateria(mat);
-                insc.setNota(rs.getDouble("nota"));
+                
+                Materia mat = new Materia (rs.getInt("idMateria"), rs.getString("nombre"), rs.getInt("año"), rs.getInt("estado"));
+                
+                Inscripcion insc= new Inscripcion(rs.getInt("idInscripto"), rs.getDouble("nota"), ad.buscarAlumno(idAlumno), mat);
+                
                 cursadas.add(insc);
             }
             

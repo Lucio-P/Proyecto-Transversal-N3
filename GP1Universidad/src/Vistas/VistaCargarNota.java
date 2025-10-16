@@ -6,6 +6,7 @@ package Vistas;
 
 import entidades.*;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import persistencia.*;
 
@@ -59,6 +60,12 @@ public class VistaCargarNota extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Alumno: ");
 
+        jcbAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbAlumnoActionPerformed(evt);
+            }
+        });
+
         jtMateria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -70,9 +77,19 @@ public class VistaCargarNota extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtMateria.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtMateriaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtMateria);
 
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbSalir.setText("Salir");
         jbSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -139,6 +156,21 @@ public class VistaCargarNota extends javax.swing.JInternalFrame {
         dispose ();
     }//GEN-LAST:event_jbSalirActionPerformed
 
+    private void jcbAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlumnoActionPerformed
+        // TODO add your handling code here:
+        cargarMateriaXAlumno();
+    }//GEN-LAST:event_jcbAlumnoActionPerformed
+
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+        // TODO add your handling code here:
+        guardarNota();
+    }//GEN-LAST:event_jbGuardarActionPerformed
+
+    private void jtMateriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtMateriaMouseClicked
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jtMateriaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -156,10 +188,12 @@ public class VistaCargarNota extends javax.swing.JInternalFrame {
     private void cabecera (){
         
         modelo.addColumn("Id Materia");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Año");
         modelo.addColumn("Materia");
+        modelo.addColumn("Año");
+        modelo.addColumn("Nota");
         jtMateria.setModel(modelo);
+        jtMateria.setDefaultEditor(Object.class, null);
+
     }
 
     private void cargarAlumno(){
@@ -172,6 +206,71 @@ public class VistaCargarNota extends javax.swing.JInternalFrame {
             jcbAlumno.addItem(a);
         }
     }
+    
+    private void cargarMateriaXAlumno (){
+        
+        limpiarTabla ();
+        
+        Alumno alumno = (Alumno) jcbAlumno.getSelectedItem();
+        
+        if (alumno != null) {
+            
+            List <Inscripcion> inscrip = inscr.ObtenerInscripcionesPorAlumno(alumno.getId_alunmo());
+            
+            for (Inscripcion i : inscrip) {
+                                
+                modelo.addRow (new Object []{
+                    
+                    i.getMateria().getIdMateria(),
+                    i.getMateria().getNombre(),
+                    i.getMateria().getAnio(),
+                    i.getNota()
+                });
+            }
+            
+        }
+    }
+    
+    private void guardarNota (){
+        
+        int fila = jtMateria.getSelectedRow();
+        
+        int nota = Integer.parseInt(jtfNota.getText()) ;
+        
+        if (fila != -1) {
+            
+            if (nota >= 0 && nota <= 10) {
+                
+            
+                try{
+                
+                    Alumno alumno = (Alumno) jcbAlumno.getSelectedItem();
+            
+                    int idMateria = (int) jtMateria.getValueAt(fila, 0);
+                
+                
+                    inscr.actualizarNota(alumno.getId_alunmo(), idMateria, nota);
+                
+                    modelo.setValueAt(nota, fila, 3);
+                
+                    JOptionPane.showMessageDialog(this, "Nota Agregada con exito.");
+                
+                    jtfNota.setText("");
+                
+                }catch (NumberFormatException e){
+                
+                    JOptionPane.showMessageDialog(this, "Ingrese una nota valida (Numero Entero)");
+                }
+            } else {
+                
+                JOptionPane.showMessageDialog(this, "Ingrese una Nota correcta. ");
+            }
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "Seleccione una materia de la tabla.");
+        }
+    }
+
     
     private void limpiarTabla (){
         
