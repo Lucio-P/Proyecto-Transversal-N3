@@ -258,7 +258,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     private void jbBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBorrarActionPerformed
         // TODO add your handling code here:
-        
+                
        String dni = jtDni.getText();
         
          if (dni.isEmpty()) {
@@ -536,9 +536,15 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(this, "No se encontor un alumno con ese DNI.");
                     }
                 
+            } catch (SQLIntegrityConstraintViolationException e){
+                
+                JOptionPane.showMessageDialog(this, "No se puede borrar el alumno porque tiene inscripciones actvias . \n" + 
+                        "Debe anularlas antes de eliminar al alumno");
+            
             } catch (SQLException ex){
                 
                 JOptionPane.showMessageDialog(this, "Error al borrar alumno: " + ex);
+                
             }
         }   
     }

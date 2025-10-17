@@ -7,6 +7,7 @@ package Vistas;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Connection;
@@ -522,9 +523,15 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(this, "No se encontor una Materia con ese ID.");
                     }
                 
+            } catch (SQLIntegrityConstraintViolationException e){
+                
+                JOptionPane.showMessageDialog(this, "No se puede borrar a la Materia porque tiene alumnos inscriptos activos . \n" + 
+                        "Debe anularlas antes de eliminar a la Materia");
+            
             } catch (SQLException ex){
                 
                 JOptionPane.showMessageDialog(this, "Error al borrar Materia: " + ex);
+                
             }
         }   
     }
