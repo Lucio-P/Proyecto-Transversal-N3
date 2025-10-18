@@ -484,7 +484,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         mostrarAlumnos();
                     } else {
                         
-                        JOptionPane.showMessageDialog(this, "No se encontor un alumno con ese DNI.");
+                        JOptionPane.showMessageDialog(this, "No se encontro un alumno con ese DNI.");
                     }
                 
             } catch (SQLException ex){
@@ -533,7 +533,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                         mostrarAlumnos();
                     } else {
                         
-                        JOptionPane.showMessageDialog(this, "No se encontor un alumno con ese DNI.");
+                        JOptionPane.showMessageDialog(this, "No se encontro un alumno con ese DNI.");
                     }
                 
             } catch (SQLIntegrityConstraintViolationException e){

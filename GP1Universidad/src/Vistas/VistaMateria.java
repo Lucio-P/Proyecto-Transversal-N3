@@ -405,7 +405,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                 ps.setInt(3, estado);
             
                 ps.executeUpdate();
-                JOptionPane.showMessageDialog(this, "Materia insertado correctamente.");
+                JOptionPane.showMessageDialog(this, "Materia insertada correctamente.");
                 limpiarCampos();
             
             }catch (SQLException ex){
@@ -466,7 +466,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                     
                     if (filas > 0) {
                         
-                        JOptionPane.showMessageDialog(this, "Materia Actualizado correctamente.");
+                        JOptionPane.showMessageDialog(this, "Materia Actualizada correctamente.");
                         limpiarCampos ();
                         mostrarMateria();
                     } else {
@@ -499,7 +499,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
             return;
         }   
         
-        int confirmar = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar el Materia:  " + jtNombreMate.getText() + "?" , 
+        int confirmar = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar la Materia:  " + jtNombreMate.getText() + "?" , 
                 " Confirmar borrado", JOptionPane.YES_NO_OPTION);
         
         if (confirmar == JOptionPane.YES_OPTION) {
@@ -520,13 +520,13 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                         mostrarMateria();
                     } else {
                         
-                        JOptionPane.showMessageDialog(this, "No se encontor una Materia con ese ID.");
+                        JOptionPane.showMessageDialog(this, "No se encontro una Materia con ese ID.");
                     }
                 
             } catch (SQLIntegrityConstraintViolationException e){
                 
                 JOptionPane.showMessageDialog(this, "No se puede borrar a la Materia porque tiene alumnos inscriptos activos . \n" + 
-                        "Debe anularlas antes de eliminar a la Materia");
+                        "Debe anularlos antes de eliminar a la Materia");
             
             } catch (SQLException ex){
                 
